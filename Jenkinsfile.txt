@@ -1,0 +1,40 @@
+pipeline {
+        agent any
+
+        stages {
+            stage('Chekout GIT'){
+                steps {
+                    echo 'Pulling...'
+                        git branch: 'master' ,
+                        url : 'https://github.com/bahaeddinetlili/Timesheet-devops.git'
+                }
+            }
+            
+            stage('MVN CLEAN') {
+                steps{
+                    sh 'mvn clean';
+                    
+                }
+                
+            }
+            
+             stage('MVN COMPILE') {
+                steps{
+                    sh 'mvn compile';
+                    
+                }
+                
+            }
+            
+            
+                    stage('MVN SONARQUBE') {
+            steps {
+                sh 'mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=sonar -Dmaven.test.skip=true';
+            }
+        }
+            
+       
+}
+        }
+        
+     
